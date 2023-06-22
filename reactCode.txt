@@ -1,0 +1,321 @@
+app.js
+
+import {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+
+function App() {
+  const [userName, setUserName] = useState();
+  const [password, setPassword] = useState();
+
+  const _login = () => {
+    console.log({userName, password});
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerView}>
+        <Text style={styles.login}>Login</Text>
+        <Text style={styles.subTitle}>Welcome To DSU Login</Text>
+      </View>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter User Name"
+        placeholderTextColor={'white'}
+        value={userName}
+        onChangeText={value => setUserName(value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter Password"
+        placeholderTextColor={'white'}
+        value={password}
+        onChangeText={value => setPassword(value)}
+        secureTextEntry
+      />
+
+      <TouchableOpacity onPress={() => _login()} style={styles.button}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    // justifyContent:'',
+    //alignItems:'center'
+  },
+
+  button: {
+    backgroundColor: 'tomato',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 25,
+  },
+  headerView: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  input: {
+    height: 50,
+    paddingHorizontal: 15,
+    color: 'white',
+    borderColor: 'white',
+    borderWidth: 1,
+    marginHorizontal: 10,
+    borderRadius: 10,
+    marginTop: 15,
+  },
+  login: {
+    color: 'white',
+    fontSize: 25,
+    // textAlign:'center',
+  },
+  subTitle: {
+    color: 'white',
+    fontSize: 25,
+  },
+});
+
+export default App;
+
+
+Login.js
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+
+const Login = props => {
+  let detail = {
+    name: 'Ashraz Rashid',
+    email: 'ashraz.developer@gmail.com',
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>{'This is Login Page'}</Text>
+
+      <Image
+        resizeMode="contain"
+        style={{width: 300, height: 300}}
+        // source={{
+        //   uri: 'https://img.freepik.com/free-vector/realistic-colorful-galaxy-background_23-2148965681.jpg',
+        // }}
+
+        source={require('./assets/galaxy.jpg')}
+      />
+
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Home', {userDetail: detail})}
+        style={styles.button}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default Login;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+
+.elinstric.js
+
+module.exports = {
+  root: true,
+  extends: '@react-native-community',
+};
+
+
+home.js
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+
+import UserDetailComp from './Components/userDetailComp';
+
+const Home = props => {
+  const {userDetail} = props.route.params;
+
+  const UserList = [
+    {
+      name: 'ashraz',
+      email: 'ashraz.developer@gmail.com',
+      img: 'https://img.freepik.com/free-vector/realistic-colorful-galaxy-background_23-2148965681.jpg',
+    },
+    {
+      name: 'ahmed',
+      email: 'ahmed@gmail.com',
+      img: 'https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701899982.jpg',
+    },
+
+    {
+      name: 'adeel',
+      email: 'adeel@gmail.com',
+      img: 'https://img.freepik.com/free-vector/realistic-colorful-galaxy-background_23-2148965681.jpg',
+    },
+
+    {
+      name: 'faraz',
+      email: 'faraz@gmail.com',
+      img: 'https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701899982.jpg',
+    },
+
+    {
+      name: 'shakir',
+      email: 'shakir@gmail.com',
+      img: 'https://wallpaper-mania.com/wp-content/uploads/2018/09/High_resolution_wallpaper_background_ID_77701899982.jpg',
+    },
+  ];
+
+  const _renderUserItem = ({item, index}) => {
+    return (
+      <UserDetailComp cellStyle={{backgroundColor: 'red'}} itemDetail={item} />
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>{'This is FlatList Page'}</Text>
+
+      <FlatList data={UserList} renderItem={_renderUserItem} />
+
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate('Login')}
+        style={styles.button}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+
+      {/* <Text>{userDetail.name}</Text>
+        <Text>{userDetail.email}</Text> */}
+    </View>
+  );
+};
+
+export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+
+useDetailCom.js
+
+import {View, Text, StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+
+const UserDetailComp = ({cellStyle, itemDetail}) => {
+  return (
+    <View style={[styles.cell, cellStyle]}>
+      <Text style={styles.detail}>{itemDetail.name}</Text>
+      <Text style={styles.detail}>{itemDetail.email}</Text>
+    </View>
+  );
+};
+
+export default UserDetailComp;
+
+const styles = StyleSheet.create({
+  cell: {
+    backgroundColor: 'green',
+    flexDirection: 'row',
+    margin: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  detail: {
+    margin: 10,
+  },
+});
+
+
+navigator
+
+import Home from './home';
+import Login from './login';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
+
+function Navigator() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          options={{
+            title: 'Login',
+            //  headerShown: false,
+          }}
+          name="Login"
+          component={Login}
+        />
+        <Stack.Screen name="Home" component={Home} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default Navigator;
+
+
+package.json
+
+{
+  "name": "awesomeproject",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "lint": "eslint .",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/native-stack": "^6.9.12",
+    "react": "18.2.0",
+    "react-native": "0.71.7",
+    "react-native-safe-area-context": "^4.5.3",
+    "react-native-screens": "^3.20.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/preset-env": "^7.20.0",
+    "@babel/runtime": "^7.20.0",
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@tsconfig/react-native": "^2.0.2",
+    "@types/jest": "^29.2.1",
+    "@types/react": "^18.0.24",
+    "@types/react-test-renderer": "^18.0.0",
+    "babel-jest": "^29.2.1",
+    "eslint": "^8.19.0",
+    "jest": "^29.2.1",
+    "metro-react-native-babel-preset": "0.73.9",
+    "prettier": "^2.4.1",
+    "react-test-renderer": "18.2.0",
+    "typescript": "4.8.4"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
+
